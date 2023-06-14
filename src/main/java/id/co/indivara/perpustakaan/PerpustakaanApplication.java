@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class PerpustakaanApplication {
 
 	public static void main(String[] args) {
-		System.out.println("barrack obama");
 		SpringApplication.run(PerpustakaanApplication.class, args);
 	}
 
