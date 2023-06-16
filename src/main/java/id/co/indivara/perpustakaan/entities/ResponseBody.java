@@ -3,12 +3,12 @@ package id.co.indivara.perpustakaan.entities;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class ResponseBody {
+public class ResponseBody<T> {
     private final Date timestamp = new Date();
     private int status;
     private String message;
     private ArrayList<String> errors;
-    private ArrayList<Object> datas;
+    private ArrayList<T> datas;
 
     public Date getTimestamp() {
         return timestamp;
@@ -38,15 +38,15 @@ public class ResponseBody {
         this.errors = errors;
     }
 
-    public ArrayList<Object> getDatas() {
+    public ArrayList<T> getDatas() {
         return datas;
     }
 
-    public void setDatas(ArrayList<Object> datas) {
+    public void setDatas(ArrayList<T> datas) {
         this.datas = datas;
     }
 
-    public ResponseBody(int status, String message, ArrayList<String> errors, ArrayList<Object> datas) {
+    public ResponseBody(int status, String message, ArrayList<String> errors, ArrayList<T> datas) {
         this.status = status;
         this.message = message;
         this.errors = errors;
