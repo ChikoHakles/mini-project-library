@@ -4,13 +4,15 @@ import id.co.indivara.perpustakaan.entities.Book;
 import id.co.indivara.perpustakaan.repositories.BookRepository;
 import id.co.indivara.perpustakaan.services.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
+@Service
 public class BookImplementation implements BookService {
     @Autowired
-    BookRepository bookRepository;
+    private BookRepository bookRepository;
     @Override
     public ArrayList<Book> findAllBook() {
         return new ArrayList<Book>((Collection<Book>) bookRepository.findAll());
