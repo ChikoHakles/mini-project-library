@@ -1,11 +1,13 @@
 package id.co.indivara.perpustakaan.implementations;
 
 import id.co.indivara.perpustakaan.entities.Book;
+import id.co.indivara.perpustakaan.exceptions.DataNotFoundException;
 import id.co.indivara.perpustakaan.repositories.BookRepository;
 import id.co.indivara.perpustakaan.services.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -16,19 +18,47 @@ public class BookImplementation implements BookService {
     @Override
     public ArrayList<Book> findAllBook() {
         ArrayList<Book> books = new ArrayList<>((Collection<Book>) bookRepository.findAll());
-        return books.isEmpty() ? null : books;
+        if(books.isEmpty()) {
+            throw new DataNotFoundException("No Data");
+        }
+        return books;
     }
 
     @Override
     public Book findBookById(Integer id) {
-        return bookRepository.findById(id).orElse(null);
+        return bookRepository.findById(id).orElseThrow(
+                () -> new DataNotFoundException("No Data")
+        );
     }
 
+    @Transactional
     @Override
     public Book saveBook(Book book) {
-        return bookRepository.save(book);
+        Book createdBook = new Book(
+                book.getBookTitle(),
+                book.getBookAuthor(),
+                book.getBookPublisher(),
+                book.getBookDescription(),
+                book.getBookPages(),
+                book.getBookCopy()
+        );
+        if(book.getBookIsbn() != null) {
+            createdBook.setBookIsbn(book.getBookIsbn());
+        }
+        if(book.getBookReady() != null) {
+            createdBook.setBookReady(book.getBookReady());
+            createdBook.setBookUnreturned(book.getBookCopy() - book.getBookReady());
+        }
+        if(book.getBookWishedBy() != null && book.getBookWishedBy() > 0) {
+            createdBook.setBookWishedBy(book.getBookWishedBy());
+        }
+        if(book.getBookNumberOfReading() != null && book.getBookNumberOfReading() > 0) {
+            createdBook.setBookNumberOfReading(book.getBookNumberOfReading());
+        }
+        return bookRepository.save(createdBook);
     }
 
+    @Transactional
     @Override
     public Book updateBook(Integer id, Book updateBook) {
         if(!bookRepository.findById(id).isPresent()) {
@@ -41,6 +71,7 @@ public class BookImplementation implements BookService {
         return null;
     }
 
+    @Transactional
     @Override
     public void deleteBook(Integer id) {
         bookRepository.deleteById(id);
