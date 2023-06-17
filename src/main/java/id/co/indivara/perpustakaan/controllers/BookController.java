@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -22,12 +23,6 @@ public class BookController {
     @GetMapping("/books")
     ResponseEntity<ResponseBody<ArrayList<Book>>> findAllBook() {
         ArrayList<Book> books = bookService.findAllBook();
-        if (books == null) {
-            return new ResponseEntity<>(
-                    new ResponseBody<>(HttpStatus.NOT_FOUND.value(), "No Data", null, books),
-                    HttpStatus.NOT_FOUND
-            );
-        }
         return new ResponseEntity<>(
                 new ResponseBody<>(HttpStatus.OK.value(), "Data Found", null, books),
                 HttpStatus.OK
@@ -37,15 +32,17 @@ public class BookController {
     @GetMapping("/books/{id}")
     ResponseEntity<ResponseBody<Book>> findBookById(@PathVariable(name = "id") Integer id) {
         Book book = bookService.findBookById(id);
-        if (book == null) {
-            return new ResponseEntity<>(
-                    new ResponseBody<>(HttpStatus.NOT_FOUND.value(), "No Data", null, book),
-                    HttpStatus.NOT_FOUND
-            );
-        }
         return new ResponseEntity<>(
                 new ResponseBody<>(HttpStatus.OK.value(), "Data Found", null, book),
                 HttpStatus.OK
+        );
+    }
+
+    @PostMapping("/books")
+    ResponseEntity<ResponseBody<Book>> saveBook(@Valid @RequestBody Book book) {
+        return new ResponseEntity<>(
+                new ResponseBody<>(HttpStatus.CREATED.value(), "Data Created", null, bookService.saveBook(book)),
+                HttpStatus.CREATED
         );
     }
 }
