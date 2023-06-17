@@ -7,8 +7,8 @@ public class ResponseBody<T> {
     private final Date timestamp = new Date();
     private int status;
     private String message;
-    private ArrayList<String> errors;
-    private ArrayList<T> datas;
+    private ArrayList<String> error;
+    private T data;
 
     public Date getTimestamp() {
         return timestamp;
@@ -30,26 +30,26 @@ public class ResponseBody<T> {
         this.message = message;
     }
 
-    public ArrayList<String> getErrors() {
-        return errors;
+    public ArrayList<String> getError() {
+        return error;
     }
 
-    public void setErrors(ArrayList<String> errors) {
-        this.errors = errors;
+    public void setError(ArrayList<String> error) {
+        this.error = error;
     }
 
-    public ArrayList<T> getDatas() {
-        return datas;
+    public T getData() {
+        return data;
     }
 
-    public void setDatas(ArrayList<T> datas) {
-        this.datas = datas;
+    public void setData(T data) {
+        this.data = data;
     }
 
-    public ResponseBody(int status, String message, ArrayList<String> errors, ArrayList<T> datas) {
+    public ResponseBody(int status, String message, ArrayList<String> error, T data) {
         this.status = status;
         this.message = message;
-        this.errors = errors;
-        this.datas = datas;
+        this.error = error;
+        this.data = data;
     }
 }
