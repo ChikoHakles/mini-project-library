@@ -1,15 +1,21 @@
 package id.co.indivara.perpustakaan.entities;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
 import lombok.AllArgsConstructor;
 
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "books")
 @Data
+@Builder
 @AllArgsConstructor
 public class Book {
     @Id
@@ -18,30 +24,33 @@ public class Book {
     private Integer bookId;
 
     @Column(name = "book_title")
-    @NonNull
+    @NotBlank(message = "Book Title must been filled")
     private String bookTitle;
 
     @Column(name = "book_author")
-    @NonNull
+    @NotBlank(message = "Book Author must been filled")
     private String bookAuthor;
 
     @Column(name = "book_publisher")
-    @NonNull
+    @NotBlank(message = "Book Publisher must been filled")
     private String bookPublisher;
 
     @Column(name = "book_isbn")
+    @Size(min = 17, max = 17, message = "ISBN length must be 17 character (XXX-XXX-XXXX-XX-X)")
     private String bookIsbn;
 
     @Column(name = "book_description")
-    @NonNull
+    @NotBlank(message = "Book Description must been filled")
     private String bookDescription;
 
     @Column(name = "book_pages")
-    @NonNull
+    @NotNull(message = "Book Pages must been filled")
+    @Min(value = 1, message = "Book Pages cannot be 0 or negative")
     private Integer bookPages;
 
     @Column(name = "book_copy")
-    @NonNull
+    @NotNull(message = "Book Copy must been filled")
+    @Min(value = 1, message = "Book Copy cannot be 0 or negative")
     private Integer bookCopy;
 
     @Column(name = "book_ready")
@@ -68,7 +77,7 @@ public class Book {
 
         this.bookPublisher = bookPublisher;
 
-        this.bookIsbn = "";
+        this.bookIsbn = null;
 
         this.bookDescription = bookDescription;
 
