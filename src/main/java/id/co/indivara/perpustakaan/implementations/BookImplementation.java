@@ -15,12 +15,13 @@ public class BookImplementation implements BookService {
     private BookRepository bookRepository;
     @Override
     public ArrayList<Book> findAllBook() {
-        return new ArrayList<Book>((Collection<Book>) bookRepository.findAll());
+        ArrayList<Book> books = new ArrayList<>((Collection<Book>) bookRepository.findAll());
+        return books.isEmpty() ? null : books;
     }
 
     @Override
     public Book findBookById(Integer id) {
-        return bookRepository.findById(id).isPresent() ? bookRepository.findById(id).get() : null;
+        return bookRepository.findById(id).orElse(null);
     }
 
     @Override
