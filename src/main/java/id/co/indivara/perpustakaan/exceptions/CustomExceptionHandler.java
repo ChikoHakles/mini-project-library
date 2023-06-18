@@ -7,18 +7,16 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class CustomExceptionHandler{
-    @ExceptionHandler(DataNotFoundException.class)
-    ResponseEntity<ResponseBody<Object>> dataNotFoundHandler(DataNotFoundException ex) {
+    @ExceptionHandler(DataRelatedException.class)
+    ResponseEntity<ResponseBody<Object>> dataRelatedHandler(DataRelatedException ex) {
         return new ResponseEntity<>(
-                new ResponseBody<>(HttpStatus.NOT_FOUND.value(), "No Data", null, null),
+                new ResponseBody<>(HttpStatus.NOT_FOUND.value(), ex.getMessage(), null, null),
                 HttpStatus.NOT_FOUND
         );
     }
