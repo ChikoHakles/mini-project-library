@@ -57,7 +57,7 @@ public class BookController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(
                 ResponseBody.builder()
                         .status(HttpStatus.ACCEPTED.value())
-                        .message(("Data Found"))
+                        .message(("Data Updated"))
                         .data(bookService.updateBook(id, book))
                         .build()
         );
