@@ -17,9 +17,11 @@ import java.util.stream.Collectors;
 public class CustomExceptionHandler{
     @ExceptionHandler(DataRelatedException.class)
     ResponseEntity<ResponseBody<Object>> dataRelatedHandler(DataRelatedException ex) {
-        return new ResponseEntity<>(
-                new ResponseBody<>(HttpStatus.NOT_FOUND.value(), ex.getMessage(), null, null),
-                HttpStatus.NOT_FOUND
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                ResponseBody.builder()
+                        .status(HttpStatus.NOT_FOUND.value())
+                        .message(ex.getMessage())
+                        .build()
         );
     }
 
@@ -27,9 +29,12 @@ public class CustomExceptionHandler{
     ResponseEntity<ResponseBody<Object>> HttpMessageNotReadableHandler(HttpMessageNotReadableException ex) {
         String [] errorSplited = ex.getMessage().split("; ");
         ArrayList<String> errors = new ArrayList<>(Arrays.asList(errorSplited));
-        return new ResponseEntity<>(
-                new ResponseBody<>(HttpStatus.NOT_ACCEPTABLE.value(), "Make sure your request follow the instructed rules", errors, null),
-                HttpStatus.NOT_ACCEPTABLE
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(
+                ResponseBody.builder()
+                        .status(HttpStatus.NOT_ACCEPTABLE.value())
+                        .message("Make sure your request follow the instructed rules")
+                        .errors(errors)
+                        .build()
         );
     }
 
@@ -52,9 +57,11 @@ public class CustomExceptionHandler{
 
     @ExceptionHandler(Exception.class)
     ResponseEntity<ResponseBody<Object>> ExceptionHandler(Exception ex) {
-        return new ResponseEntity<>(
-                new ResponseBody<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage(), null, null),
-                HttpStatus.INTERNAL_SERVER_ERROR
+        return ResponseEntity.internalServerError().body(
+                ResponseBody.builder()
+                        .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                        .message(ex.getMessage())
+                        .build()
         );
     }
 }

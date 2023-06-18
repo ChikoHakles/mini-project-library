@@ -20,45 +20,57 @@ public class BookController {
     private BookService bookService;
 
     @GetMapping("/books")
-    ResponseEntity<ResponseBody<ArrayList<Book>>> findAllBook() {
-        ArrayList<Book> books = bookService.findAllBook();
-        return new ResponseEntity<>(
-                new ResponseBody<>(HttpStatus.OK.value(), "Data Found", null, books),
-                HttpStatus.OK
+    ResponseEntity<ResponseBody<Object>> findAllBook() {
+        return ResponseEntity.ok(
+                ResponseBody.builder()
+                        .status(HttpStatus.OK.value())
+                        .message("Dsata Found")
+                        .data(bookService.findAllBook())
+                        .build()
         );
     }
 
     @GetMapping("/books/{id}")
-    ResponseEntity<ResponseBody<Book>> findBookById(@PathVariable(name = "id") Integer id) {
-        Book book = bookService.findBookById(id);
-        return new ResponseEntity<>(
-                new ResponseBody<>(HttpStatus.OK.value(), "Data Found", null, book),
-                HttpStatus.OK
+    ResponseEntity<ResponseBody<Object>> findBookById(@PathVariable(name = "id") Integer id) {
+        return ResponseEntity.ok(
+                ResponseBody.builder()
+                        .status(HttpStatus.CREATED.value())
+                        .message(("Data Found"))
+                        .data(bookService.findBookById(id))
+                        .build()
         );
     }
 
     @PostMapping("/books")
-    ResponseEntity<ResponseBody<Book>> saveBook(@Valid @Nullable @RequestBody Book book) {
-        return new ResponseEntity<>(
-                new ResponseBody<>(HttpStatus.CREATED.value(), "Data Created", null, bookService.saveBook(book)),
-                HttpStatus.CREATED
+    ResponseEntity<ResponseBody<Object>> saveBook(@Valid @Nullable @RequestBody Book book) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                ResponseBody.builder()
+                        .status(HttpStatus.CREATED.value())
+                        .message(("Data Created"))
+                        .data(bookService.saveBook(book))
+                        .build()
         );
     }
 
     @PutMapping("/books/{id}")
-    ResponseEntity<ResponseBody<Book>> updateBook(@PathVariable(name = "id") Integer id, @Nullable @RequestBody Book book) {
-        return new ResponseEntity<>(
-                new ResponseBody<>(HttpStatus.ACCEPTED.value(), "Data Updated", null, bookService.updateBook(id, book)),
-                HttpStatus.ACCEPTED
+    ResponseEntity<ResponseBody<Object>> updateBook(@PathVariable(name = "id") Integer id, @Nullable @RequestBody Book book) {
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(
+                ResponseBody.builder()
+                        .status(HttpStatus.ACCEPTED.value())
+                        .message(("Data Found"))
+                        .data(bookService.updateBook(id, book))
+                        .build()
         );
     }
 
     @DeleteMapping("/books/{id}")
     ResponseEntity<ResponseBody<Object>> deleteBook(@PathVariable(name = "id") Integer id) {
         bookService.deleteBook(id);
-        return new ResponseEntity<>(
-                new ResponseBody<>(HttpStatus.OK.value(), "Data Deleted", null, null),
-                HttpStatus.OK
+        return ResponseEntity.ok(
+                ResponseBody.builder()
+                        .status(HttpStatus.CREATED.value())
+                        .message(("Data Deleted"))
+                        .build()
         );
     }
 }
