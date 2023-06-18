@@ -38,27 +38,8 @@ public class BookImplementation implements BookService {
         if(book == null) {
             throw new DataRelatedException("Must have a book inputted");
         }
-        Book createdBook = new Book(
-                book.getBookTitle(),
-                book.getBookAuthor(),
-                book.getBookPublisher(),
-                book.getBookDescription(),
-                book.getBookPages(),
-                book.getBookCopy()
-        );
-        if(book.getBookIsbn() != null) {
-            createdBook.setBookIsbn(book.getBookIsbn());
-        }
-        if(book.getBookReady() != null) {
-            createdBook.setBookReady(book.getBookReady());
-            createdBook.setBookUnreturned(book.getBookCopy() - book.getBookReady());
-        }
-        if(book.getBookWishedBy() != null && book.getBookWishedBy() > 0) {
-            createdBook.setBookWishedBy(book.getBookWishedBy());
-        }
-        if(book.getBookNumberOfReading() != null && book.getBookNumberOfReading() > 0) {
-            createdBook.setBookNumberOfReading(book.getBookNumberOfReading());
-        }
+        Book createdBook = new Book();
+        Utility.copyNonNullField(book, createdBook);
         return bookRepository.save(createdBook);
     }
 
