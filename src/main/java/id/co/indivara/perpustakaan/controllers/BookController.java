@@ -34,7 +34,7 @@ public class BookController {
     ResponseEntity<ResponseBody<Object>> findBookById(@PathVariable(name = "id") Integer id) {
         return ResponseEntity.ok(
                 ResponseBody.builder()
-                        .status(HttpStatus.CREATED.value())
+                        .status(HttpStatus.OK.value())
                         .message(("Data Found"))
                         .data(bookService.findBookById(id))
                         .build()
