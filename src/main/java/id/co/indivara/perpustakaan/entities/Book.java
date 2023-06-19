@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(name = "books")
+@Table(name = "MST_books")
 @Data
 @Builder
 @AllArgsConstructor
