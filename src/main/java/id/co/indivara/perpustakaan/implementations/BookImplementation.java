@@ -38,7 +38,15 @@ public class BookImplementation implements BookService {
         if(book == null) {
             throw new DataRelatedException("Must have a book inputted");
         }
-        Book createdBook = new Book();
+        //object dibuat dulu karena semua field di Book dibuat berdasarkan 6 data ini
+        Book createdBook = new Book(
+                book.getBookTitle(),
+                book.getBookAuthor(),
+                book.getBookPublisher(),
+                book.getBookDescription(),
+                book.getBookPages(),
+                book.getBookCopy()
+        );
         Utility.copyNonNullField(book, createdBook);
         return bookRepository.save(createdBook);
     }
