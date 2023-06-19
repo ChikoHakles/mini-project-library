@@ -23,7 +23,7 @@ public class BookController {
         return ResponseEntity.ok(
                 ResponseBody.builder()
                         .status(HttpStatus.OK.value())
-                        .message("Dsata Found")
+                        .message("Book Found")
                         .data(bookService.findAllBook())
                         .build()
         );
@@ -34,7 +34,7 @@ public class BookController {
         return ResponseEntity.ok(
                 ResponseBody.builder()
                         .status(HttpStatus.OK.value())
-                        .message(("Data Found"))
+                        .message(("Book Found"))
                         .data(bookService.findBookById(id))
                         .build()
         );
@@ -45,7 +45,7 @@ public class BookController {
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 ResponseBody.builder()
                         .status(HttpStatus.CREATED.value())
-                        .message(("Data Created"))
+                        .message(("Book Created"))
                         .data(bookService.saveBook(book))
                         .build()
         );
@@ -56,7 +56,7 @@ public class BookController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(
                 ResponseBody.builder()
                         .status(HttpStatus.ACCEPTED.value())
-                        .message(("Data Updated"))
+                        .message(("Book Updated"))
                         .data(bookService.updateBook(id, book))
                         .build()
         );
@@ -67,8 +67,8 @@ public class BookController {
         bookService.deleteBook(id);
         return ResponseEntity.ok(
                 ResponseBody.builder()
-                        .status(HttpStatus.CREATED.value())
-                        .message(("Data Deleted"))
+                        .status(HttpStatus.OK.value())
+                        .message(("Book Deleted"))
                         .build()
         );
     }

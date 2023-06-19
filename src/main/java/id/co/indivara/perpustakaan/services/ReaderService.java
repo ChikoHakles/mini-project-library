@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public interface ReaderService {
     ArrayList<Reader> findAllReader();
     Reader findReaderById(Integer id);
-    Reader saveReader(Reader book);
-    Reader updateReader(Integer id, Reader bookUpdate);
+    Reader saveReader(Reader reader);
+    Reader updateReader(Integer id, Reader readerUpdate);
     void deleteReader(Integer id);
 }
