@@ -1,9 +1,6 @@
 package id.co.indivara.perpustakaan.entities;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.NonNull;
-import lombok.AllArgsConstructor;
+import lombok.*;
 
 
 import javax.persistence.*;
@@ -17,6 +14,7 @@ import javax.validation.constraints.Size;
 @Data
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class Book {
     @Id
     @Column(name = "book_id")
@@ -67,8 +65,6 @@ public class Book {
 
     @Column(name = "book_number_of_reading")
     private Integer bookNumberOfReading;
-
-    public Book() {}
 
     public Book(@NonNull String bookTitle, @NonNull String bookAuthor, @NonNull String bookPublisher, @NonNull String bookDescription, @NonNull Integer bookPages, @NonNull Integer bookCopy) {
         this.bookTitle = bookTitle;

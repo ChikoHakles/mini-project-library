@@ -1,8 +1,8 @@
 package id.co.indivara.perpustakaan.controllers;
 
-import id.co.indivara.perpustakaan.entities.Book;
+import id.co.indivara.perpustakaan.entities.Reader;
 import id.co.indivara.perpustakaan.entities.ResponseBody;
-import id.co.indivara.perpustakaan.services.BookService;
+import id.co.indivara.perpustakaan.services.ReaderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,62 +13,61 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api")
-public class BookController {
-
+public class ReaderController {
     @Autowired
-    private BookService bookService;
+    private ReaderService readerService;
 
-    @GetMapping("/books")
-    ResponseEntity<ResponseBody<Object>> findAllBook() {
+    @GetMapping("/readers")
+    ResponseEntity<ResponseBody<Object>> findAllReader() {
         return ResponseEntity.ok(
                 ResponseBody.builder()
                         .status(HttpStatus.OK.value())
-                        .message("Book Found")
-                        .data(bookService.findAllBook())
+                        .message("Reader Found")
+                        .data(readerService.findAllReader())
                         .build()
         );
     }
 
-    @GetMapping("/books/{id}")
-    ResponseEntity<ResponseBody<Object>> findBookById(@PathVariable(name = "id") Integer id) {
+    @GetMapping("/readers/{id}")
+    ResponseEntity<ResponseBody<Object>> findReaderById(@PathVariable(name = "id") Integer id) {
         return ResponseEntity.ok(
                 ResponseBody.builder()
                         .status(HttpStatus.OK.value())
-                        .message(("Book Found"))
-                        .data(bookService.findBookById(id))
+                        .message(("Reader Found"))
+                        .data(readerService.findReaderById(id))
                         .build()
         );
     }
 
-    @PostMapping("/books")
-    ResponseEntity<ResponseBody<Object>> saveBook(@Valid @Nullable @RequestBody Book book) {
+    @PostMapping("/readers")
+    ResponseEntity<ResponseBody<Object>> saveReader(@Valid @Nullable @RequestBody Reader reader) {
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 ResponseBody.builder()
                         .status(HttpStatus.CREATED.value())
-                        .message(("Book Created"))
-                        .data(bookService.saveBook(book))
+                        .message("Reader Created")
+                        .data(readerService.saveReader(reader))
                         .build()
         );
     }
 
-    @PutMapping("/books/{id}")
-    ResponseEntity<ResponseBody<Object>> updateBook(@PathVariable(name = "id") Integer id, @Nullable @RequestBody Book book) {
+    @PutMapping("/readers/{id}")
+    ResponseEntity<ResponseBody<Object>> updateReader(@PathVariable(name = "id") Integer id, @Nullable @RequestBody Reader reader) {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(
                 ResponseBody.builder()
                         .status(HttpStatus.ACCEPTED.value())
-                        .message(("Book Updated"))
-                        .data(bookService.updateBook(id, book))
+                        .message(("Reader Updated"))
+                        .data(readerService.updateReader(id, reader))
                         .build()
         );
     }
 
-    @DeleteMapping("/books/{id}")
+    @DeleteMapping("/readers/{id}")
     ResponseEntity<ResponseBody<Object>> deleteBook(@PathVariable(name = "id") Integer id) {
-        bookService.deleteBook(id);
+        readerService.deleteReader(id);
         return ResponseEntity.ok(
                 ResponseBody.builder()
                         .status(HttpStatus.OK.value())
-                        .message(("Book Deleted"))
+                        .message(("Reader Deleted"))
                         .build()
         );
     }
