@@ -5,11 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 @Entity
 @Table(name = "MST_categories")
@@ -21,9 +19,12 @@ public class Category {
     @Id
     @Column(name = "category_id")
     @NotBlank(message = "Category Code must been filled")
-    private String categoryCode;
+    private String categoryId;
 
     @Column(name = "category_name")
     @NotBlank(message = "Category Name must been filled")
     private String categoryName;
+
+//    @OneToMany(mappedBy = "categoryId", cascade = CascadeType.ALL)
+//    private List<Book> books;
 }
