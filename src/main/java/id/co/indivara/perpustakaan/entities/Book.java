@@ -8,6 +8,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Entity
 @Table(name = "MST_books")
@@ -65,6 +66,14 @@ public class Book {
 
     @Column(name = "book_number_of_reading")
     private Integer bookNumberOfReading;
+
+    @OneToMany(mappedBy = "book")
+    private List<Wishlist> bookWishList;
+
+//    @ManyToOne
+//    @JoinColumn(name = "category_id")
+//    @NotBlank(message = "Book Category must been filled")
+//    private String categoryId;
 
     public Book(@NonNull String bookTitle, @NonNull String bookAuthor, @NonNull String bookPublisher, @NonNull String bookDescription, @NonNull Integer bookPages, @NonNull Integer bookCopy) {
         this.bookTitle = bookTitle;

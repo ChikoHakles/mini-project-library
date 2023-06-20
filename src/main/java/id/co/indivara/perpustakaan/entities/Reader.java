@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 @Entity
 @Table(name = "MST_readers")
@@ -33,6 +34,9 @@ public class Reader {
 
     @Column(name = "reader_phone")
     private String readerPhone;
+
+    @OneToMany(mappedBy = "reader")
+    private List<Wishlist> readerWishlist;
 
     public Reader(String readerName, String readerAddress) {
         this.readerName = readerName;
