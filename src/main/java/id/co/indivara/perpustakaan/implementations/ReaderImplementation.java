@@ -21,7 +21,7 @@ public class ReaderImplementation implements ReaderService {
     public ArrayList<Reader> findAllReader() {
         ArrayList<Reader> readers = new ArrayList<>((Collection<Reader>) readerRepository.findAll());
         if (readers.isEmpty()) {
-            throw new DataRelatedException("No Data");
+            throw new DataRelatedException("No Reader Found");
         }
         return readers;
     }
@@ -29,7 +29,7 @@ public class ReaderImplementation implements ReaderService {
     @Override
     public Reader findReaderById(Integer id) {
         return readerRepository.findById(id).orElseThrow(
-                () -> new DataRelatedException("No Data")
+                () -> new DataRelatedException("No Reader Found")
         );
     }
 
@@ -46,12 +46,12 @@ public class ReaderImplementation implements ReaderService {
 
     @Transactional
     @Override
-    public Reader updateReader(Integer id, Reader updateReader) {
-        if(updateReader == null) {
+    public Reader updateReader(Integer id, Reader readerUpdate) {
+        if(readerUpdate == null) {
             throw new DataRelatedException("Must have a reader inputted");
         }
         Reader oldReader = findReaderById(id);
-        Utility.copyNonNullField(updateReader, oldReader);
+        Utility.copyNonNullField(readerUpdate, oldReader);
         return readerRepository.save(oldReader);
     }
 

@@ -6,11 +6,13 @@ import id.co.indivara.perpustakaan.repositories.CategoryRepository;
 import id.co.indivara.perpustakaan.services.CategoryService;
 import id.co.indivara.perpustakaan.utils.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
 
+@Service
 public class CategoryImplementation implements CategoryService {
     @Autowired
     private CategoryRepository categoryRepository;
@@ -19,7 +21,7 @@ public class CategoryImplementation implements CategoryService {
     public ArrayList<Category> findAllCategory() {
         ArrayList<Category> categories = new ArrayList<>((Collection<Category>) categoryRepository.findAll());
         if (categories.isEmpty()) {
-            throw new DataRelatedException("No Data");
+            throw new DataRelatedException("No Category Found");
         }
         return categories;
     }
@@ -27,7 +29,7 @@ public class CategoryImplementation implements CategoryService {
     @Override
     public Category findCategoryById(String id) {
         return categoryRepository.findById(id).orElseThrow(
-                () -> new DataRelatedException("No Data")
+                () -> new DataRelatedException("No Category Found")
         );
     }
 
@@ -44,12 +46,12 @@ public class CategoryImplementation implements CategoryService {
 
     @Transactional
     @Override
-    public Category updateCategory(String id, Category updateCategory) {
-        if(updateCategory == null) {
+    public Category updateCategory(String id, Category categoryUpdate) {
+        if(categoryUpdate == null) {
             throw new DataRelatedException("Must have a category inputted");
         }
         Category oldCategory = findCategoryById(id);
-        Utility.copyNonNullField(updateCategory, oldCategory);
+        Utility.copyNonNullField(categoryUpdate, oldCategory);
         return categoryRepository.save(oldCategory);
     }
 

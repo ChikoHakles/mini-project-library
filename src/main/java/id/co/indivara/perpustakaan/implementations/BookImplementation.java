@@ -20,7 +20,7 @@ public class BookImplementation implements BookService {
     public ArrayList<Book> findAllBook() {
         ArrayList<Book> books = new ArrayList<>((Collection<Book>) bookRepository.findAll());
         if(books.isEmpty()) {
-            throw new DataRelatedException("No Data");
+            throw new DataRelatedException("No Book Found");
         }
         return books;
     }
@@ -28,7 +28,7 @@ public class BookImplementation implements BookService {
     @Override
     public Book findBookById(Integer id) {
         return bookRepository.findById(id).orElseThrow(
-                () -> new DataRelatedException("No Data")
+                () -> new DataRelatedException("No Book Found")
         );
     }
 
