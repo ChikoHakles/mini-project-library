@@ -3,6 +3,7 @@ package id.co.indivara.perpustakaan.implementations;
 import id.co.indivara.perpustakaan.entities.Reader;
 import id.co.indivara.perpustakaan.exceptions.DataRelatedException;
 import id.co.indivara.perpustakaan.repositories.ReaderRepository;
+import id.co.indivara.perpustakaan.repositories.WishlistRepository;
 import id.co.indivara.perpustakaan.services.ReaderService;
 import id.co.indivara.perpustakaan.utils.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,9 @@ import java.util.Collection;
 public class ReaderImplementation implements ReaderService {
     @Autowired
     private ReaderRepository readerRepository;
+
+    @Autowired
+    private WishlistRepository wishlistRepository;
 
     @Override
     public ArrayList<Reader> findAllReader() {
@@ -58,7 +62,7 @@ public class ReaderImplementation implements ReaderService {
     @Transactional
     @Override
     public void deleteReader(Integer id) {
-        findReaderById(id);
+        wishlistRepository.deleteAll(wishlistRepository.findAllByReader(findReaderById(id)));
         readerRepository.deleteById(id);
     }
 }
