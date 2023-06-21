@@ -1,5 +1,8 @@
 package id.co.indivara.perpustakaan.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -35,8 +38,8 @@ public class Reader {
     @Column(name = "reader_phone")
     private String readerPhone;
 
-    @OneToMany(mappedBy = "reader")
-    private List<Wishlist> readerWishlist;
+    @Transient
+    private List<Book> readerWishlist;
 
     public Reader(String readerName, String readerAddress) {
         this.readerName = readerName;
