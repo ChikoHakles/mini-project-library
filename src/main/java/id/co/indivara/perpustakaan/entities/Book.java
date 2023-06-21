@@ -1,5 +1,8 @@
 package id.co.indivara.perpustakaan.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 
@@ -66,9 +69,6 @@ public class Book {
 
     @Column(name = "book_number_of_reading")
     private Integer bookNumberOfReading;
-
-    @OneToMany(mappedBy = "book")
-    private List<Wishlist> bookWishList;
 
 //    @ManyToOne
 //    @JoinColumn(name = "category_id")
