@@ -1,4 +1,4 @@
-package id.co.indivara.library.services;
+package id.co.indivara.library.repositories;
 
 import id.co.indivara.library.entities.Book;
 import id.co.indivara.library.entities.Borrow;
