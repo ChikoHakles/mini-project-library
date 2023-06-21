@@ -3,6 +3,7 @@ package id.co.indivara.perpustakaan.implementations;
 import id.co.indivara.perpustakaan.entities.Book;
 import id.co.indivara.perpustakaan.entities.Reader;
 import id.co.indivara.perpustakaan.entities.Wishlist;
+import id.co.indivara.perpustakaan.entities.WishlistDTO;
 import id.co.indivara.perpustakaan.exceptions.DataRelatedException;
 import id.co.indivara.perpustakaan.repositories.WishlistRepository;
 import id.co.indivara.perpustakaan.services.BookService;
@@ -10,11 +11,13 @@ import id.co.indivara.perpustakaan.services.ReaderService;
 import id.co.indivara.perpustakaan.services.WishlistService;
 import id.co.indivara.perpustakaan.utils.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
 
+@Service
 public class WishlistImplementation implements WishlistService {
     @Autowired
     private WishlistRepository wishlistRepository;
@@ -36,23 +39,17 @@ public class WishlistImplementation implements WishlistService {
     @Override
     public ArrayList<Wishlist> findAllWishlistByBook(Book book) {
         ArrayList<Wishlist> wishlists = wishlistRepository.findAllByBook(book);
-        if (wishlists.isEmpty()) {
-            throw new DataRelatedException("No Wishlist Found");
-        }
         return wishlists;
     }
 
     @Override
     public ArrayList<Wishlist> findAllWishlistByReader(Reader reader) {
         ArrayList<Wishlist> wishlists = wishlistRepository.findAllByReader(reader);
-        if (wishlists.isEmpty()) {
-            throw new DataRelatedException("No Wishlist Found");
-        }
         return wishlists;
     }
 
     @Override
-    public Wishlist findByWishlistId(Integer id) {
+    public Wishlist findWishlistById(Integer id) {
         return wishlistRepository.findById(id).orElseThrow(
                 () -> new DataRelatedException("No Wishlist Found")
         );
@@ -60,14 +57,13 @@ public class WishlistImplementation implements WishlistService {
 
     @Transactional
     @Override
-    public Wishlist saveWishlist(Wishlist wishlist) {
-        if (wishlist == null) {
+    public Wishlist saveWishlist(WishlistDTO wishlistDTO) {
+        if (wishlistDTO == null) {
             throw new DataRelatedException("Must have a wishlist inputted");
         }
-//        readerService.findReaderById(wishlist.getReader().getReaderId());
-//        bookService.findBookById(wishlist.getBook().getBookId());
-        Wishlist createdWishlist = new Wishlist();
-        Utility.copyNonNullField(wishlist, createdWishlist);
+        Reader reader = readerService.findReaderById(wishlistDTO.getReaderId());
+        Book book = bookService.findBookById(wishlistDTO.getBookId());
+        Wishlist createdWishlist = new Wishlist(book, reader);
         return wishlistRepository.save(createdWishlist);
     }
 
@@ -76,14 +72,14 @@ public class WishlistImplementation implements WishlistService {
         if(wishlistUpdate == null) {
             throw new DataRelatedException("Must have a wishlist inputted");
         }
-        Wishlist oldWishlist = findByWishlistId(id);
+        Wishlist oldWishlist = findWishlistById(id);
         Utility.copyNonNullField(wishlistUpdate, oldWishlist);
         return wishlistRepository.save(oldWishlist);
     }
 
     @Override
     public void deleteWishlist(Integer id) {
-        findByWishlistId(id);
+        findWishlistById(id);
         wishlistRepository.deleteById(id);
     }
 }
