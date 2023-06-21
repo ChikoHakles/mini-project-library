@@ -11,4 +11,9 @@ public class WishlistDTO {
     private Integer wishlistId;
     private Integer bookId;
     private Integer readerId;
+
+    public WishlistDTO(Integer bookId, Integer readerId) {
+        this.bookId = bookId;
+        this.readerId = readerId;
+    }
 }
