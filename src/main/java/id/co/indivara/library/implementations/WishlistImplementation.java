@@ -66,16 +66,6 @@ public class WishlistImplementation implements WishlistService {
     }
 
     @Override
-    public Wishlist updateWishlist(Integer id, Wishlist wishlistUpdate) {
-        if(wishlistUpdate == null) {
-            throw new DataRelatedException("Must have a wishlist inputted");
-        }
-        Wishlist oldWishlist = findWishlistById(id);
-        Utility.copyNonNullField(wishlistUpdate, oldWishlist);
-        return wishlistRepository.save(oldWishlist);
-    }
-
-    @Override
     public void deleteWishlist(Integer id) {
         findWishlistById(id);
         wishlistRepository.deleteById(id);
