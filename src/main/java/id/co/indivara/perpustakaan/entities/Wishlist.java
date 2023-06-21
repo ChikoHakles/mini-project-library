@@ -1,5 +1,6 @@
 package id.co.indivara.perpustakaan.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,11 +21,9 @@ public class Wishlist {
     private Integer wishListId;
 
     @ManyToOne
-    @Column(name = "book_id")
     private Book book;
 
     @ManyToOne
-    @Column(name = "reader_id")
     private Reader reader;
 
     public Wishlist(Book book, Reader reader) {
