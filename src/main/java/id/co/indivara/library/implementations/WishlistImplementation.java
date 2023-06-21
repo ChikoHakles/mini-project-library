@@ -27,6 +27,7 @@ public class WishlistImplementation implements WishlistService {
 
     @Autowired
     private BookService bookService;
+
     @Override
     public ArrayList<Wishlist> findAllWishlist() {
         ArrayList<Wishlist> wishlists = new ArrayList<>((Collection<Wishlist>) wishlistRepository.findAll());
@@ -38,11 +39,13 @@ public class WishlistImplementation implements WishlistService {
 
     @Override
     public ArrayList<Wishlist> findAllWishlistByBook(Book book) {
+        bookService.findBookById(book.getBookId());
         return wishlistRepository.findAllByBook(book);
     }
 
     @Override
     public ArrayList<Wishlist> findAllWishlistByReader(Reader reader) {
+        readerService.findReaderById(reader.getReaderId());
         return wishlistRepository.findAllByReader(reader);
     }
 
