@@ -49,17 +49,6 @@ public class WishlistController {
         );
     }
 
-    @PutMapping("/wishlists/{id}")
-    ResponseEntity<ResponseBody<Object>> updateWishlist(@PathVariable(name = "id") Integer id, @Nullable @RequestBody Wishlist wishlist) {
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(
-                ResponseBody.builder()
-                        .status(HttpStatus.ACCEPTED.value())
-                        .message(("Wishlist Updated"))
-                        .data(wishlistService.updateWishlist(id, wishlist))
-                        .build()
-        );
-    }
-
     @DeleteMapping("/wishlists/{id}")
     ResponseEntity<ResponseBody<Object>> deleteBook(@PathVariable(name = "id") Integer id) {
         wishlistService.deleteWishlist(id);
