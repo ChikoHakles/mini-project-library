@@ -38,14 +38,12 @@ public class WishlistImplementation implements WishlistService {
 
     @Override
     public ArrayList<Wishlist> findAllWishlistByBook(Book book) {
-        ArrayList<Wishlist> wishlists = wishlistRepository.findAllByBook(book);
-        return wishlists;
+        return wishlistRepository.findAllByBook(book);
     }
 
     @Override
     public ArrayList<Wishlist> findAllWishlistByReader(Reader reader) {
-        ArrayList<Wishlist> wishlists = wishlistRepository.findAllByReader(reader);
-        return wishlists;
+        return wishlistRepository.findAllByReader(reader);
     }
 
     @Override
