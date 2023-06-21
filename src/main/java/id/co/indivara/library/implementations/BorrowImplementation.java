@@ -75,15 +75,15 @@ public class BorrowImplementation implements BorrowService {
         }
         Book book = bookService.findBookById(borrowDTO.getBookId());
         Reader reader = readerService.findReaderById(borrowDTO.getReaderId());
-        if (book.getBookReady() == 0) {
-            wishlistService.saveWishlist(new WishlistDTO(borrowDTO.getBookId(), borrowDTO.getReaderId()));
-            throw new RuntimeException("Book stock isn't available (bookReady==0). Book added to reader's wishlist");
+        if (book.getBookReady() > 0) {
+            book.setBookReady(book.getBookReady() - 1);
+            book.setBookUnreturned(book.getBookUnreturned() + 1);
+            book.setBookNumberOfReading(book.getBookNumberOfReading() + 1);
+            Borrow createdBorrow = new Borrow(book, reader);
+            return borrowRepository.save(createdBorrow);
         }
-        book.setBookReady(book.getBookReady() - 1);
-        book.setBookUnreturned(book.getBookUnreturned() + 1);
-        book.setBookNumberOfReading(book.getBookNumberOfReading() + 1);
-        Borrow createdBorrow = new Borrow(book, reader);
-        return borrowRepository.save(createdBorrow);
+        wishlistService.saveWishlist(new WishlistDTO(borrowDTO.getBookId(), borrowDTO.getReaderId()));
+        return null;
     }
 
     @Transactional
