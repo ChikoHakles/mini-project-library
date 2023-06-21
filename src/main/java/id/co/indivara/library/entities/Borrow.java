@@ -7,10 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -29,10 +26,10 @@ public class Borrow {
     @Column(name = "borrow_code")
     private String borrowCode;
 
-    @Column(name = "book_id")
+    @ManyToOne(fetch = FetchType.EAGER)
     private Book book;
 
-    @Column(name = "reader_id")
+    @ManyToOne(fetch = FetchType.EAGER)
     private Reader reader;
 
     @Column(name = "borrow_date")
