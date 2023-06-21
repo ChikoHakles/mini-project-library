@@ -26,7 +26,7 @@ public class Utility {
 
     public static String generateCode(TransactionType type, LocalDateTime localDateTime) {
         return String.format(
-                "%c%2d%2d%2d%s",
+                "%c%02d%02d%02d%s",
                 type.toString().charAt(0),
                 localDateTime.getDayOfMonth(),
                 localDateTime.getMonth().getValue(),
