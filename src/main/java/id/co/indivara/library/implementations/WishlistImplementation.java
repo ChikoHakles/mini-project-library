@@ -27,7 +27,6 @@ public class WishlistImplementation implements WishlistService {
 
     @Autowired
     private BookService bookService;
-
     @Override
     public ArrayList<Wishlist> findAllWishlist() {
         ArrayList<Wishlist> wishlists = new ArrayList<>((Collection<Wishlist>) wishlistRepository.findAll());
