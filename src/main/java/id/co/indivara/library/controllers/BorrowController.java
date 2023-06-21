@@ -52,11 +52,20 @@ public class BorrowController {
 
     @PostMapping("/borrows")
     ResponseEntity<ResponseBody<Object>> saveBorrow(@Nullable @RequestBody BorrowDTO borrowDTO) {
+        Object data = borrowService.saveBorrow(borrowDTO);
+        if (data == null) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(
+                    ResponseBody.builder()
+                            .status(HttpStatus.CREATED.value())
+                            .message("Book not available. Auto-wishlist triggered")
+                            .build()
+            );
+        }
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 ResponseBody.builder()
                         .status(HttpStatus.CREATED.value())
                         .message("Borrow Created")
-                        .data(borrowService.saveBorrow(borrowDTO))
+                        .data(data)
                         .build()
         );
     }
