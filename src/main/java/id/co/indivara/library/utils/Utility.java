@@ -39,7 +39,7 @@ public class Utility {
         StringBuilder stringBuilder = new StringBuilder();
         Random random = new Random();
         for(int i = 0; i < loops; i++) {
-            stringBuilder.append(random.nextInt(26) + 65);
+            stringBuilder.append((char) (random.nextInt(26) + 65));
         }
         return stringBuilder.toString();
     }
