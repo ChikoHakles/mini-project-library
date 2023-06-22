@@ -1,12 +1,11 @@
 package id.co.indivara.library.implementations;
 
 import id.co.indivara.library.entities.*;
+import id.co.indivara.library.exceptions.BookTransactionException;
 import id.co.indivara.library.exceptions.DataRelatedException;
 import id.co.indivara.library.repositories.BorrowRepository;
-import id.co.indivara.library.services.BookService;
-import id.co.indivara.library.services.BorrowService;
-import id.co.indivara.library.services.ReaderService;
-import id.co.indivara.library.services.WishlistService;
+import id.co.indivara.library.repositories.ReturnRepository;
+import id.co.indivara.library.services.*;
 import id.co.indivara.library.utils.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,11 +14,15 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class BorrowImplementation implements BorrowService {
     @Autowired
     private BorrowRepository borrowRepository;
+
+    @Autowired
+    private ReturnRepository returnRepository;
 
     @Autowired
     private BookService bookService;
@@ -41,14 +44,12 @@ public class BorrowImplementation implements BorrowService {
 
     @Override
     public ArrayList<Borrow> findAllBorrowByReader(Reader reader) {
-        readerService.findReaderById(reader.getReaderId());
-        return new ArrayList<>(borrowRepository.findAllByReader(reader));
+        return new ArrayList<>(borrowRepository.findAllByReader(readerService.findReaderById(reader.getReaderId())));
     }
 
     @Override
     public ArrayList<Borrow> findAllBorrowByBook(Book book) {
-        bookService.findBookById(book.getBookId());
-        return new ArrayList<>(borrowRepository.findAllByBook(book));
+        return new ArrayList<>(borrowRepository.findAllByBook(bookService.findBookById(book.getBookId())));
     }
 
     @Override
@@ -67,6 +68,41 @@ public class BorrowImplementation implements BorrowService {
         );
     }
 
+    @Override
+    public ArrayList<Borrow> findUnreturnedBorrow() {
+        ArrayList<Borrow> pool = findAllBorrow();
+        ArrayList<Borrow> returneds = new ArrayList<>();
+        returnRepository.findAll().forEach(ret -> returneds.add(ret.getBorrow()));
+        pool.removeIf(returneds::contains);
+        return pool;
+    }
+
+    @Override
+    public ArrayList<Borrow> findUnreturnedBorrowByReader(Reader reader) {
+        ArrayList<Borrow> pool = findAllBorrowByReader(reader);
+        ArrayList<Borrow> unreturneds = new ArrayList<>();
+        for (Borrow b: pool) {
+            Return ret = returnRepository.findByBorrow(b);
+            if(ret == null) {
+                unreturneds.add(b);
+            }
+        }
+        return unreturneds;
+    }
+
+    @Override
+    public ArrayList<Borrow> findUnreturnedBorrowByBook(Book book) {
+        ArrayList<Borrow> pool = findAllBorrowByBook(book);
+        ArrayList<Borrow> unreturneds = new ArrayList<>();
+        for (Borrow b: pool) {
+            Return ret = returnRepository.findByBorrow(b);
+            if(ret == null) {
+                unreturneds.add(b);
+            }
+        }
+        return unreturneds;
+    }
+
     @Transactional
     @Override
     public Borrow saveBorrow(BorrowDTO borrowDTO) {
@@ -75,6 +111,9 @@ public class BorrowImplementation implements BorrowService {
         }
         Book book = bookService.findBookById(borrowDTO.getBookId());
         Reader reader = readerService.findReaderById(borrowDTO.getReaderId());
+        if(returnRepository.findByBorrow(borrowRepository.findFirstByReaderAndBookOrderByBorrowDateDesc(reader, book)) != null) {
+            throw new BookTransactionException("Cannot borrow same book at the same time");
+        }
         if (book.getBookReady() > 0) {
             book.setBookReady(book.getBookReady() - 1);
             book.setBookUnreturned(book.getBookUnreturned() + 1);
@@ -89,8 +128,7 @@ public class BorrowImplementation implements BorrowService {
     @Transactional
     @Override
     public void deleteBorrow(UUID id) {
-        findBorrowById(id);
-        borrowRepository.deleteById(id);
+        borrowRepository.delete(findBorrowById(id));
     }
 
     @Transactional

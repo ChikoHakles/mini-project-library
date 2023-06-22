@@ -12,6 +12,9 @@ public interface BorrowService {
     ArrayList<Borrow> findAllBorrow();
     ArrayList<Borrow> findAllBorrowByReader(Reader reader);
     ArrayList<Borrow> findAllBorrowByBook(Book book);
+    ArrayList<Borrow> findUnreturnedBorrow();
+    ArrayList<Borrow> findUnreturnedBorrowByReader(Reader reader);
+    ArrayList<Borrow> findUnreturnedBorrowByBook(Book book);
     Borrow findBorrowById(UUID id);
     Borrow findBorrowByCode(String code);
     Borrow saveBorrow(BorrowDTO borrowDTO);
