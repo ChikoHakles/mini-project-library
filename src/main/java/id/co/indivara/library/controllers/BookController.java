@@ -3,6 +3,7 @@ package id.co.indivara.library.controllers;
 import id.co.indivara.library.entities.Book;
 import id.co.indivara.library.entities.ResponseBody;
 import id.co.indivara.library.services.BookService;
+import id.co.indivara.library.services.BorrowService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,9 @@ public class BookController {
 
     @Autowired
     private BookService bookService;
+
+    @Autowired
+    private BorrowService borrowService;
 
     @GetMapping("/books")
     ResponseEntity<ResponseBody<Object>> findAllBook() {
@@ -36,6 +40,17 @@ public class BookController {
                         .status(HttpStatus.OK.value())
                         .message(("Book Found"))
                         .data(bookService.findBookById(id))
+                        .build()
+        );
+    }
+
+    @GetMapping("/books/{id}/unreturned")
+    ResponseEntity<ResponseBody<Object>> findBookUnreturned(@PathVariable(name = "id") Integer id) {
+        return ResponseEntity.ok(
+                ResponseBody.builder()
+                        .status(HttpStatus.OK.value())
+                        .message("Borrow Found")
+                        .data(borrowService.findUnreturnedBorrowByBook(bookService.findBookById(id)))
                         .build()
         );
     }
