@@ -13,5 +13,6 @@ import java.util.UUID;
 public interface BorrowRepository extends CrudRepository<Borrow, UUID> {
     List<Borrow> findAllByBook(Book book);
     List<Borrow> findAllByReader(Reader reader);
+    Borrow findFirstByReaderAndBookOrderByBorrowDateDesc(Reader reader, Book book);
     Borrow findByBorrowCode(String code);
 }
