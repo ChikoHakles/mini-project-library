@@ -25,6 +25,16 @@ public class CustomExceptionHandler{
         );
     }
 
+    @ExceptionHandler(BookTransactionException.class)
+    ResponseEntity<ResponseBody<Object>> bookTransactionHandler(BookTransactionException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(
+                ResponseBody.builder()
+                        .status(HttpStatus.NOT_ACCEPTABLE.value())
+                        .message(ex.getMessage())
+                        .build()
+        );
+    }
+
     @ExceptionHandler(HttpMessageNotReadableException.class)
     ResponseEntity<ResponseBody<Object>> HttpMessageNotReadableHandler(HttpMessageNotReadableException ex) {
         String [] errorSplited = ex.getMessage().split("; ");
