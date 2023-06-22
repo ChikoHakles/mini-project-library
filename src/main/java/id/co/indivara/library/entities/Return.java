@@ -25,7 +25,7 @@ public class Return {
     @Column(name = "return_code")
     private String returnCode;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "borrow")
     private Borrow borrow;
 
