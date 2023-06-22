@@ -4,6 +4,7 @@ import id.co.indivara.library.entities.Book;
 import id.co.indivara.library.entities.Reader;
 import id.co.indivara.library.entities.ResponseBody;
 import id.co.indivara.library.entities.Wishlist;
+import id.co.indivara.library.services.BorrowService;
 import id.co.indivara.library.services.ReaderService;
 import id.co.indivara.library.services.WishlistService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,8 @@ public class ReaderController {
     private ReaderService readerService;
     @Autowired
     private WishlistService wishlistService;
+    @Autowired
+    private BorrowService borrowService;
 
     @GetMapping("/readers")
     ResponseEntity<ResponseBody<Object>> findAllReader() {
@@ -63,6 +66,17 @@ public class ReaderController {
                         .status(HttpStatus.OK.value())
                         .message("Wishlist Found")
                         .data(wishlistService.findAllWishlistByReader(readerService.findReaderById(id)))
+                        .build()
+        );
+    }
+
+    @GetMapping("/readers/{id}/unreturned")
+    ResponseEntity<ResponseBody<Object>> findReaderUnreturned(@PathVariable(name = "id") Integer id) {
+        return ResponseEntity.ok(
+                ResponseBody.builder()
+                        .status(HttpStatus.OK.value())
+                        .message("Borrow Found")
+                        .data(borrowService.findUnreturnedBorrowByReader(readerService.findReaderById(id)))
                         .build()
         );
     }
