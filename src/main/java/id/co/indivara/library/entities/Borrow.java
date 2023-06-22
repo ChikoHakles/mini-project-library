@@ -26,10 +26,10 @@ public class Borrow {
     @Column(name = "borrow_code")
     private String borrowCode;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Book book;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Reader reader;
 
     @Column(name = "borrow_date")
