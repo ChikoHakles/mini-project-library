@@ -111,18 +111,19 @@ public class BorrowImplementation implements BorrowService {
         }
         Book book = bookService.findBookById(borrowDTO.getBookId());
         Reader reader = readerService.findReaderById(borrowDTO.getReaderId());
-        if(returnRepository.findByBorrow(borrowRepository.findFirstByReaderAndBookOrderByBorrowDateDesc(reader, book)) != null) {
-            throw new BookTransactionException("Cannot borrow same book at the same time");
+        if (book.getBookReady() == 0) {
+            wishlistService.saveWishlist(new WishlistDTO(borrowDTO.getBookId(), borrowDTO.getReaderId()));
+            return null;
         }
-        if (book.getBookReady() > 0) {
-            book.setBookReady(book.getBookReady() - 1);
-            book.setBookUnreturned(book.getBookUnreturned() + 1);
-            book.setBookNumberOfReading(book.getBookNumberOfReading() + 1);
-            Borrow createdBorrow = new Borrow(book, reader);
-            return borrowRepository.save(createdBorrow);
+        Wishlist wishlist = wishlistService.findWishlistByBookAndReader(book, reader);
+        if(wishlist != null) {
+            wishlistService.delete(wishlist);
         }
-        wishlistService.saveWishlist(new WishlistDTO(borrowDTO.getBookId(), borrowDTO.getReaderId()));
-        return null;
+        book.setBookReady(book.getBookReady() - 1);
+        book.setBookUnreturned(book.getBookUnreturned() + 1);
+        book.setBookNumberOfReading(book.getBookNumberOfReading() + 1);
+        Borrow createdBorrow = new Borrow(book, reader);
+        return borrowRepository.save(createdBorrow);
     }
 
     @Transactional
