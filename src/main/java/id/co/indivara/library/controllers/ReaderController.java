@@ -4,9 +4,7 @@ import id.co.indivara.library.entities.Book;
 import id.co.indivara.library.entities.Reader;
 import id.co.indivara.library.entities.ResponseBody;
 import id.co.indivara.library.entities.Wishlist;
-import id.co.indivara.library.services.BorrowService;
-import id.co.indivara.library.services.ReaderService;
-import id.co.indivara.library.services.WishlistService;
+import id.co.indivara.library.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +24,12 @@ public class ReaderController {
     private WishlistService wishlistService;
     @Autowired
     private BorrowService borrowService;
+
+    @Autowired
+    private HistoryService historyService;
+
+    @Autowired
+    private BookService bookService;
 
     @GetMapping("/readers")
     ResponseEntity<ResponseBody<Object>> findAllReader() {
@@ -77,6 +81,26 @@ public class ReaderController {
                         .status(HttpStatus.OK.value())
                         .message("Borrow Found")
                         .data(borrowService.findUnreturnedBorrowByReader(readerService.findReaderById(id)))
+                        .build()
+        );
+    }
+
+    @GetMapping("/readers/{id}/history")
+    ResponseEntity<ResponseBody<Object>> findReaderHistory(@PathVariable(name = "id") Integer id, @RequestParam(name = "bookId", required = false) Integer bookId) {
+        if(bookId != null) {
+            return ResponseEntity.ok(
+                    ResponseBody.builder()
+                            .status(HttpStatus.OK.value())
+                            .message("History Found")
+                            .data(historyService.findHistoryByBookAndReader(bookService.findBookById(bookId), readerService.findReaderById(id)))
+                            .build()
+            );
+        }
+        return ResponseEntity.ok(
+                ResponseBody.builder()
+                        .status(HttpStatus.OK.value())
+                        .message("History Found")
+                        .data(historyService.findHistoryByReader(readerService.findReaderById(id)))
                         .build()
         );
     }

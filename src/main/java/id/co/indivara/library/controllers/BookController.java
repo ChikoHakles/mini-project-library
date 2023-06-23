@@ -4,6 +4,8 @@ import id.co.indivara.library.entities.Book;
 import id.co.indivara.library.entities.ResponseBody;
 import id.co.indivara.library.services.BookService;
 import id.co.indivara.library.services.BorrowService;
+import id.co.indivara.library.services.HistoryService;
+import id.co.indivara.library.services.ReaderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,12 @@ public class BookController {
 
     @Autowired
     private BorrowService borrowService;
+
+    @Autowired
+    private HistoryService historyService;
+
+    @Autowired
+    private ReaderService readerService;
 
     @GetMapping("/books")
     ResponseEntity<ResponseBody<Object>> findAllBook() {
@@ -49,8 +57,28 @@ public class BookController {
         return ResponseEntity.ok(
                 ResponseBody.builder()
                         .status(HttpStatus.OK.value())
-                        .message("Borrow Found")
+                        .message("Unreturned Book Found")
                         .data(borrowService.findUnreturnedBorrowByBook(bookService.findBookById(id)))
+                        .build()
+        );
+    }
+
+    @GetMapping("/books/{id}/history")
+    ResponseEntity<ResponseBody<Object>> findBookHistory(@PathVariable(name = "id") Integer id, @RequestParam(name = "readerId", required = false) Integer readerId) {
+        if(readerId != null) {
+            return ResponseEntity.ok(
+                    ResponseBody.builder()
+                            .status(HttpStatus.OK.value())
+                            .message("History Found")
+                            .data(historyService.findHistoryByBookAndReader(bookService.findBookById(id), readerService.findReaderById(readerId)))
+                            .build()
+            );
+        }
+        return ResponseEntity.ok(
+                ResponseBody.builder()
+                        .status(HttpStatus.OK.value())
+                        .message("History Found")
+                        .data(historyService.findHistoryByBook(bookService.findBookById(id)))
                         .build()
         );
     }
