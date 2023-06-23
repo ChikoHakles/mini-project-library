@@ -11,7 +11,9 @@ public interface WishlistService {
     ArrayList<Wishlist> findAllWishlist();
     ArrayList<Wishlist> findAllWishlistByBook(Book book);
     ArrayList<Wishlist> findAllWishlistByReader(Reader reader);
+    Wishlist findWishlistByBookAndReader(Book book, Reader reader);
     Wishlist findWishlistById(Integer id);
     Wishlist saveWishlist(WishlistDTO wishlistDTO);
     void deleteWishlist(Integer id);
+    void delete(Wishlist wishlist);
 }

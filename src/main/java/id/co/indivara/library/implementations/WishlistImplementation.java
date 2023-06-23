@@ -63,13 +63,32 @@ public class WishlistImplementation implements WishlistService {
         }
         Reader reader = readerService.findReaderById(wishlistDTO.getReaderId());
         Book book = bookService.findBookById(wishlistDTO.getBookId());
+        if(findWishlistByBookAndReader(book, reader) != null) {
+            throw new DataRelatedException("Wishlist for this book and reader have had set");
+        }
         Wishlist createdWishlist = new Wishlist(book, reader);
+        book.setBookWishedBy(book.getBookWishedBy() + 1);
         return wishlistRepository.save(createdWishlist);
     }
 
     @Override
+    public Wishlist findWishlistByBookAndReader(Book book, Reader reader) {
+        bookService.findBookById(book.getBookId());
+        readerService.findReaderById(reader.getReaderId());
+        return wishlistRepository.findByBookAndReader(book, reader);
+    }
+
+    @Override
     public void deleteWishlist(Integer id) {
-        findWishlistById(id);
+        Book book = findWishlistById(id).getBook();
+        book.setBookWishedBy(book.getBookWishedBy() - 1);
         wishlistRepository.deleteById(id);
+    }
+
+    @Override
+    public void delete(Wishlist wishlist) {
+        Book book = wishlist.getBook();
+        book.setBookWishedBy(book.getBookWishedBy() - 1);
+        wishlistRepository.delete(wishlist);
     }
 }
