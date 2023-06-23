@@ -12,4 +12,5 @@ import java.util.ArrayList;
 public interface WishlistRepository extends CrudRepository<Wishlist, Integer> {
     ArrayList<Wishlist> findAllByBook(Book book);
     ArrayList<Wishlist> findAllByReader(Reader reader);
+    Wishlist findByBookAndReader(Book book, Reader reader);
 }
