@@ -69,7 +69,7 @@ public class BookControllerTest {
     }
 
     @Test
-    public void findBookNoBookFoundTest() throws Exception {
+    public void findBookFailedNotFoundTest() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/books/{id}", 0)
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -79,7 +79,7 @@ public class BookControllerTest {
     }
 
     @Test
-    public void findBookUnauthorizedTest() throws Exception {
+    public void findBookFailedUnauthorizedTest() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/books/{id}", 1)
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -166,6 +166,16 @@ public class BookControllerTest {
     }
 
     @Test
+    public void createBookFailedNoRequestBodyTest() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/books")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Basic " + librarianKey))
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+        ;
+    }
+
+    @Test
     public void updateBookSuccessTest() throws Exception {
         Book book = Book.builder()
                 .bookTitle("Diwan Makan Somay")
@@ -191,7 +201,7 @@ public class BookControllerTest {
     }
 
     @Test
-    public void updateBookNotFoundTest() throws Exception {
+    public void updateBookFailedNotFoundTest() throws Exception {
         Book book = Book.builder()
                 .bookTitle("Diwan Makan Somay")
                 .bookDescription("Makan somay sekebon")
@@ -216,7 +226,7 @@ public class BookControllerTest {
     }
 
     @Test
-    public void updateBookUnauthorizedTest() throws Exception {
+    public void updateBookFailedUnauthorizedTest() throws Exception {
         Book book = Book.builder()
                 .bookTitle("Diwan Makan Somay")
                 .bookDescription("Makan somay sekebon")
@@ -231,7 +241,7 @@ public class BookControllerTest {
     }
 
     @Test
-    public void updateBookForbiddenTest() throws Exception {
+    public void updateBookFailedForbiddenTest() throws Exception {
         Book book = Book.builder()
                 .bookTitle("Diwan Makan Somay")
                 .bookDescription("Makan somay sekebon")
@@ -243,6 +253,16 @@ public class BookControllerTest {
                         .header("Authorization", "Basic " + readerKey)
                         .content(objectMapper.writeValueAsString(book)))
                 .andExpect(MockMvcResultMatchers.status().isForbidden())
+        ;
+    }
+
+    @Test
+    public void updateBookFailedNoRequestBodyTest() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/books/{id}", 9)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Basic " + librarianKey))
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
         ;
     }
 }
