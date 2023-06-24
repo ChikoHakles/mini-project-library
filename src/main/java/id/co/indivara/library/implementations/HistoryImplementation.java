@@ -4,6 +4,7 @@ import id.co.indivara.library.entities.Book;
 import id.co.indivara.library.entities.History;
 import id.co.indivara.library.entities.Reader;
 import id.co.indivara.library.entities.Return;
+import id.co.indivara.library.exceptions.DataRelatedException;
 import id.co.indivara.library.services.BorrowService;
 import id.co.indivara.library.services.HistoryService;
 import id.co.indivara.library.services.ReturnService;
@@ -36,6 +37,9 @@ public class HistoryImplementation implements HistoryService {
                             .build()
             );
         }
+        if (histories.isEmpty()) {
+            throw new DataRelatedException("No History Found");
+        }
         return histories;
     }
 
@@ -57,6 +61,9 @@ public class HistoryImplementation implements HistoryService {
                                 .build()
                 );
             }
+        }
+        if (histories.isEmpty()) {
+            throw new DataRelatedException("No History Found");
         }
         return histories;
     }
@@ -80,6 +87,9 @@ public class HistoryImplementation implements HistoryService {
                 );
             }
         }
+        if (histories.isEmpty()) {
+            throw new DataRelatedException("No History Found");
+        }
         return histories;
     }
 
@@ -101,6 +111,9 @@ public class HistoryImplementation implements HistoryService {
                                 .build()
                 );
             }
+        }
+        if (histories.isEmpty()) {
+            throw new DataRelatedException("No History Found");
         }
         return histories;
     }
