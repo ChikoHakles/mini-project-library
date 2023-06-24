@@ -34,13 +34,6 @@ public class ReaderController {
     @GetMapping("/readers")
     ResponseEntity<ResponseBody<Object>> findAllReader() {
         ArrayList<Reader> readers = readerService.findAllReader();
-        for (Reader reader : readers) {
-            ArrayList<Book> wishlist = new ArrayList<>(wishlistService.findAllWishlistByReader(reader).stream().map(Wishlist::getBook).collect(Collectors.toList()));
-            if(wishlist.isEmpty()) {
-                break;
-            }
-            reader.setReaderWishlist(wishlist);
-        }
         return ResponseEntity.ok(
                 ResponseBody.builder()
                         .status(HttpStatus.OK.value())
@@ -53,7 +46,6 @@ public class ReaderController {
     @GetMapping("/readers/{id}")
     ResponseEntity<ResponseBody<Object>> findReaderById(@PathVariable(name = "id") Integer id) {
         Reader reader = readerService.findReaderById(id);
-        reader.setReaderWishlist(wishlistService.findAllWishlistByReader(reader).stream().map(Wishlist::getBook).collect(Collectors.toList()));
         return ResponseEntity.ok(
                 ResponseBody.builder()
                         .status(HttpStatus.OK.value())
