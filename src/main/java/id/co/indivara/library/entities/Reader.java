@@ -35,9 +35,6 @@ public class Reader {
     @Column(name = "reader_phone")
     private String readerPhone;
 
-    @Transient
-    private List<Book> readerWishlist;
-
     public Reader(String readerName, String readerAddress) {
         this.readerName = readerName;
         this.readerAddress = readerAddress;
