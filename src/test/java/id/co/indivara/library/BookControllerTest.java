@@ -24,6 +24,10 @@ public class BookControllerTest {
     @Autowired
     private BookService bookService;
 
+    String readerKey = "cmVhZGVyOnJlYWRlcg==";
+    String librarianKey = "bGlicmFyaWFuOmxpYnJhcmlhbg==";
+    String adminKey = "YWRtaW46YWRtaW4=";
+
     ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
@@ -31,7 +35,7 @@ public class BookControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/books")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .header("Authorization", "Basic cmVhZGVyOnJlYWRlcg=="))
+                        .header("Authorization", "Basic " + readerKey))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(res -> {
                     ResponseBody<Object> responseBody = objectMapper.readValue(
@@ -50,7 +54,7 @@ public class BookControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/books/{id}", 1)
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .header("Authorization", "Basic cmVhZGVyOnJlYWRlcg=="))
+                        .header("Authorization", "Basic " + readerKey))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(res -> {
                     ResponseBody<Object> responseBody = objectMapper.readValue(
@@ -69,7 +73,7 @@ public class BookControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/books/{id}", 0)
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .header("Authorization", "Basic cmVhZGVyOnJlYWRlcg=="))
+                        .header("Authorization", "Basic " + readerKey))
                 .andExpect(MockMvcResultMatchers.status().isNotFound())
         ;
     }
@@ -84,22 +88,161 @@ public class BookControllerTest {
     }
 
     @Test
-    public void createBookSuccess() throws Exception {
-        Book book = new Book();
+    public void createBookSuccessTest() throws Exception {
+        Book book = Book.builder()
+                .bookTitle("Banyak Jalan Menuju Roma")
+                .bookAuthor("Pleaides")
+                .bookDescription("Veni Vidi Vici")
+                .bookCopy(1)
+                .bookPages(632)
+                .bookPublisher("Roman")
+                .build();
+
         mockMvc.perform(MockMvcRequestBuilders.post("/api/books")
                     .accept(MediaType.APPLICATION_JSON)
                     .contentType(MediaType.APPLICATION_JSON)
+                    .header("Authorization", "Basic " + librarianKey)
                     .content(objectMapper.writeValueAsString(book)))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andDo(res -> {
+                    ResponseBody<Book> responseBody = objectMapper.readValue(
+                            res.getResponse().getContentAsString(),
+                            new TypeReference<ResponseBody<Book>>() {}
+                    );
+                    Assertions.assertEquals("Book Created", responseBody.getMessage());
+                    Assertions.assertNotNull(responseBody.getData());
+                    Assertions.assertNull(responseBody.getErrors());
+
+                    bookService.deleteBook(responseBody.getData().getBookId());
+                })
+        ;
+    }
+
+    @Test
+    public void createBookFailedValidationErrorTest() throws Exception {
+        Book book = Book.builder().build();
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/books")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Basic " + librarianKey)
+                        .content(objectMapper.writeValueAsString(book)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
                 .andDo(res -> {
                     ResponseBody<Object> responseBody = objectMapper.readValue(
                             res.getResponse().getContentAsString(),
                             new TypeReference<ResponseBody<Object>>() {}
                     );
-                    Assertions.assertEquals("Book Created", responseBody.getMessage());
+                    Assertions.assertEquals("Data Not Valid", responseBody.getMessage());
+                    Assertions.assertNull(responseBody.getData());
+                    Assertions.assertNotNull(responseBody.getErrors());
+                })
+        ;
+    }
+
+    @Test
+    public void createBookFailedUnauthorizedTest() throws Exception {
+        Book book = Book.builder().build();
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/books")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(book)))
+                .andExpect(MockMvcResultMatchers.status().isUnauthorized())
+        ;
+    }
+
+    @Test
+    public void createBookFailedForbiddenTest() throws Exception {
+        Book book = Book.builder().build();
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/books")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Basic " + readerKey)
+                        .content(objectMapper.writeValueAsString(book)))
+                .andExpect(MockMvcResultMatchers.status().isForbidden())
+        ;
+    }
+
+    @Test
+    public void updateBookSuccessTest() throws Exception {
+        Book book = Book.builder()
+                .bookTitle("Diwan Makan Somay")
+                .bookDescription("Makan somay sekebon")
+                .build();
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/books/{id}", 9)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Basic " + librarianKey)
+                        .content(objectMapper.writeValueAsString(book)))
+                .andExpect(MockMvcResultMatchers.status().isAccepted())
+                .andDo(res -> {
+                    ResponseBody<Book> responseBody = objectMapper.readValue(
+                            res.getResponse().getContentAsString(),
+                            new TypeReference<ResponseBody<Book>>() {}
+                    );
+                    Assertions.assertEquals("Book Updated", responseBody.getMessage());
                     Assertions.assertNotNull(responseBody.getData());
                     Assertions.assertNull(responseBody.getErrors());
                 })
+        ;
+    }
+
+    @Test
+    public void updateBookNotFoundTest() throws Exception {
+        Book book = Book.builder()
+                .bookTitle("Diwan Makan Somay")
+                .bookDescription("Makan somay sekebon")
+                .build();
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/books/{id}", 0)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Basic " + librarianKey)
+                        .content(objectMapper.writeValueAsString(book)))
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andDo(res -> {
+                    ResponseBody<Book> responseBody = objectMapper.readValue(
+                            res.getResponse().getContentAsString(),
+                            new TypeReference<ResponseBody<Book>>() {}
+                    );
+                    Assertions.assertEquals("No Book Found", responseBody.getMessage());
+                    Assertions.assertNull(responseBody.getData());
+                    Assertions.assertNull(responseBody.getErrors());
+                })
+        ;
+    }
+
+    @Test
+    public void updateBookUnauthorizedTest() throws Exception {
+        Book book = Book.builder()
+                .bookTitle("Diwan Makan Somay")
+                .bookDescription("Makan somay sekebon")
+                .build();
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/books/{id}", 9)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(book)))
+                .andExpect(MockMvcResultMatchers.status().isUnauthorized())
+        ;
+    }
+
+    @Test
+    public void updateBookForbiddenTest() throws Exception {
+        Book book = Book.builder()
+                .bookTitle("Diwan Makan Somay")
+                .bookDescription("Makan somay sekebon")
+                .build();
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/books/{id}", 9)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Basic " + readerKey)
+                        .content(objectMapper.writeValueAsString(book)))
+                .andExpect(MockMvcResultMatchers.status().isForbidden())
         ;
     }
 }
