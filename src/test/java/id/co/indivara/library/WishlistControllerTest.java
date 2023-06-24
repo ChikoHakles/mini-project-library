@@ -2,12 +2,9 @@ package id.co.indivara.library;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import id.co.indivara.library.entities.Reader;
 import id.co.indivara.library.entities.ResponseBody;
 import id.co.indivara.library.entities.Wishlist;
 import id.co.indivara.library.entities.WishlistDTO;
-import id.co.indivara.library.services.BookService;
-import id.co.indivara.library.services.ReaderService;
 import id.co.indivara.library.services.WishlistService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
