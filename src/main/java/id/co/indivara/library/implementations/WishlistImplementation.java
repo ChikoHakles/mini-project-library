@@ -39,13 +39,21 @@ public class WishlistImplementation implements WishlistService {
     @Override
     public ArrayList<Wishlist> findAllWishlistByBook(Book book) {
         bookService.findBookById(book.getBookId());
-        return wishlistRepository.findAllByBook(book);
+        ArrayList<Wishlist> wishlists= wishlistRepository.findAllByBook(book);
+        if (wishlists.isEmpty()) {
+            throw new DataRelatedException("No Wishlist Found");
+        }
+        return wishlists;
     }
 
     @Override
     public ArrayList<Wishlist> findAllWishlistByReader(Reader reader) {
         readerService.findReaderById(reader.getReaderId());
-        return wishlistRepository.findAllByReader(reader);
+        ArrayList<Wishlist> wishlists= wishlistRepository.findAllByReader(reader);
+        if (wishlists.isEmpty()) {
+            throw new DataRelatedException("No Wishlist Found");
+        }
+        return wishlists;
     }
 
     @Override
