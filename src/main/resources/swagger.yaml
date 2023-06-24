@@ -1,0 +1,514 @@
+swagger: '2.0'
+info:
+  version: '1.0'
+  title: Library RestAPI Endpoints
+  contact: {}
+host: localhost:8080
+basePath: /api
+securityDefinitions:
+  basic:
+    type: basic
+schemes:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /books:
+    get:
+      summary: /books
+      tags:
+        - Books Endpoint
+      operationId: /books
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+    post:
+      summary: /books
+      tags:
+        - Books Endpoint
+      operationId: Post/books
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: Body
+          in: body
+          required: true
+          description: ''
+          schema:
+            $ref: '#/definitions/~1booksrequest'
+      responses:
+        '200':
+          description: ''
+          headers: {}
+  /books/35:
+    get:
+      summary: /books/{id}
+      tags:
+        - Books Endpoint
+      operationId: /books/{id}
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+    delete:
+      summary: /books/{id}1
+      tags:
+        - Books Endpoint
+      operationId: /books/{id}1
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+  /books/4/unreturned:
+    get:
+      summary: /books/{id}/unreturned
+      tags:
+        - Books Endpoint
+      operationId: /books/{id}/unreturned
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+  /books/6/history:
+    get:
+      summary: /books/{id}/history
+      tags:
+        - Books Endpoint
+      operationId: /books/{id}/history
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+  /books/4:
+    put:
+      summary: /book/{id}
+      tags:
+        - Books Endpoint
+      operationId: /book/{id}
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: Body
+          in: body
+          required: true
+          description: ''
+          schema:
+            $ref: '#/definitions/~1book~1%7Bid%7Drequest'
+      responses:
+        '200':
+          description: ''
+          headers: {}
+  /readers:
+    get:
+      summary: /readers
+      tags:
+        - Readers Endpoint
+      operationId: /readers
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+    post:
+      summary: /readers
+      tags:
+        - Readers Endpoint
+      operationId: Post/readers
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: Body
+          in: body
+          required: true
+          description: ''
+          schema:
+            $ref: '#/definitions/~1readersrequest'
+      responses:
+        '200':
+          description: ''
+          headers: {}
+  /readers/2:
+    get:
+      summary: /readers/{id}
+      tags:
+        - Readers Endpoint
+      operationId: /readers/{id}
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+  /readers/4/wishlists:
+    get:
+      summary: /readers/{id}/wishlists
+      tags:
+        - Readers Endpoint
+      operationId: /readers/{id}/wishlists
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+  /readers/2/unreturned:
+    get:
+      summary: /readers/{id}/unreturned
+      tags:
+        - Readers Endpoint
+      operationId: /readers/{id}/unreturned
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+  /readers/5/history:
+    get:
+      summary: /readers/{id}/history
+      tags:
+        - Readers Endpoint
+      operationId: /readers/{id}/history
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+  /readers/3:
+    put:
+      summary: /readers/{id}
+      tags:
+        - Readers Endpoint
+      operationId: Put/readers/{id}
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: Body
+          in: body
+          required: true
+          description: ''
+          schema:
+            $ref: '#/definitions/~1readers~1%7Bid%7Drequest'
+      responses:
+        '200':
+          description: ''
+          headers: {}
+  /readers/14:
+    delete:
+      summary: /readers/{id}1
+      tags:
+        - Readers Endpoint
+      operationId: /readers/{id}1
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+  /wishlists:
+    get:
+      summary: /wishlists
+      tags:
+        - Wishlists Endpoint
+      operationId: /wishlists
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+    post:
+      summary: /wishlists
+      tags:
+        - Wishlists Endpoint
+      operationId: Post/wishlists
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: Body
+          in: body
+          required: true
+          description: ''
+          schema:
+            $ref: '#/definitions/~1wishlistsrequest'
+      responses:
+        '200':
+          description: ''
+          headers: {}
+  /wishlists/4:
+    get:
+      summary: /wishlists/{id}
+      tags:
+        - Wishlists Endpoint
+      operationId: /wishlists/{id}
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+  /wishlists/50:
+    delete:
+      summary: /wishlists/{id}1
+      tags:
+        - Wishlists Endpoint
+      operationId: /wishlists/{id}1
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+  /borrows:
+    get:
+      summary: /borrows
+      tags:
+        - Borrows Endpoint
+      operationId: /borrows
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+    post:
+      summary: /borrows
+      tags:
+        - Borrows Endpoint
+      operationId: Post/borrows
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: Body
+          in: body
+          required: true
+          description: ''
+          schema:
+            $ref: '#/definitions/~1borrowsrequest'
+      responses:
+        '200':
+          description: ''
+          headers: {}
+  /returns:
+    get:
+      summary: /returns
+      tags:
+        - Returns Endpoint
+      operationId: /returns
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+    post:
+      summary: /returns
+      tags:
+        - Returns Endpoint
+      operationId: Post/returns
+      deprecated: false
+      produces:
+        - application/json
+      parameters:
+        - name: borrowCode
+          in: query
+          required: true
+          type: string
+          description: ''
+      responses:
+        '200':
+          description: ''
+          headers: {}
+  /returns/R24062023RIK:
+    get:
+      summary: /returns/{code}
+      tags:
+        - Returns Endpoint
+      operationId: /returns/{code}
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+  /history:
+    get:
+      summary: /history
+      tags:
+        - History Endpoint
+      operationId: /history
+      deprecated: false
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+definitions:
+  /booksrequest:
+    title: /booksrequest
+    example:
+      bookTitle: Para Pencari Biawak
+      bookAuthor: Kadal
+      bookPublisher: Maxima Claudia
+      bookDescription: Buku yang dibuat khusus untuk kadal
+      bookPages: 234
+      bookCopy: 3
+    type: object
+    properties:
+      bookTitle:
+        type: string
+      bookAuthor:
+        type: string
+      bookPublisher:
+        type: string
+      bookDescription:
+        type: string
+      bookPages:
+        type: integer
+        format: int32
+      bookCopy:
+        type: integer
+        format: int32
+    required:
+      - bookTitle
+      - bookAuthor
+      - bookPublisher
+      - bookDescription
+      - bookPages
+      - bookCopy
+  /book/{id}request:
+    title: /book/{id}request
+    example:
+      bookTitle: Cara Beli Barang Bayar Seikhlasnya
+    type: object
+    properties:
+      bookTitle:
+        type: string
+    required:
+      - bookTitle
+  /readersrequest:
+    title: /readersrequest
+    example:
+      readerName: Nurdin
+      readerAddress: Kayumanis
+      readerEmail: nurdin@gmail.com
+    type: object
+    properties:
+      readerName:
+        type: string
+      readerAddress:
+        type: string
+      readerEmail:
+        type: string
+    required:
+      - readerName
+      - readerAddress
+      - readerEmail
+  /readers/{id}request:
+    title: /readers/{id}request
+    example:
+      readerPhone: '09209409405'
+    type: object
+    properties:
+      readerPhone:
+        type: string
+    required:
+      - readerPhone
+  /wishlistsrequest:
+    title: /wishlistsrequest
+    example:
+      bookId: 7
+      readerId: 5
+    type: object
+    properties:
+      bookId:
+        type: integer
+        format: int32
+      readerId:
+        type: integer
+        format: int32
+    required:
+      - bookId
+      - readerId
+  /borrowsrequest:
+    title: /borrowsrequest
+    example:
+      bookId: 2
+      readerId: 4
+    type: object
+    properties:
+      bookId:
+        type: integer
+        format: int32
+      readerId:
+        type: integer
+        format: int32
+    required:
+      - bookId
+      - readerId
+security:
+  - basic: []
+tags:
+  - name: Books Endpoint
+  - name: Readers Endpoint
+  - name: Wishlists Endpoint
+  - name: Borrows Endpoint
+  - name: Returns Endpoint
+  - name: History Endpoint
