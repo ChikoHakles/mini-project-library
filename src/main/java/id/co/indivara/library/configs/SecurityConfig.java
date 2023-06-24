@@ -25,7 +25,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.PUT, "/api/readers/**").hasAnyRole("ADMIN", "LIBRARIAN")
                 .antMatchers(HttpMethod.DELETE, "/api/readers/**").hasAnyRole("ADMIN", "LIBRARIAN")
                 .antMatchers(HttpMethod.POST, "/api/wishlists").hasAnyRole("LIBRARIAN", "READER")
-                .antMatchers(HttpMethod.POST, "/api/borrows").hasAnyRole("LIBRARIAN")
+                .antMatchers(HttpMethod.POST, "/api/borrows").hasAnyRole("LIBRARIAN", "READER")
                 .antMatchers(HttpMethod.POST, "/api/returns").hasAnyRole("LIBRARIAN")
                 .anyRequest().authenticated()
                 .and()
