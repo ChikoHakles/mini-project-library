@@ -71,7 +71,7 @@ public class ReaderController {
         return ResponseEntity.ok(
                 ResponseBody.builder()
                         .status(HttpStatus.OK.value())
-                        .message("Borrow Found")
+                        .message("Unreturned Book Found")
                         .data(borrowService.findUnreturnedBorrowByReader(readerService.findReaderById(id)))
                         .build()
         );
