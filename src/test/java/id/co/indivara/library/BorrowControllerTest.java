@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import id.co.indivara.library.entities.*;
+import id.co.indivara.library.services.BookService;
 import id.co.indivara.library.services.BorrowService;
 import id.co.indivara.library.services.ReturnService;
 import org.junit.jupiter.api.Assertions;
@@ -27,6 +28,9 @@ public class BorrowControllerTest {
 
     @Autowired
     private ReturnService returnService;
+
+    @Autowired
+    private BookService bookService;
 
     String readerKey = "cmVhZGVyOnJlYWRlcg==";
     String librarianKey = "bGlicmFyaWFuOmxpYnJhcmlhbg==";
@@ -201,9 +205,19 @@ public class BorrowControllerTest {
 
     @Test
     public void createBorrowSuccessTest() throws Exception {
+        Book book = bookService.saveBook(Book.builder()
+                .bookTitle("Banyak Jalan Menuju Roma")
+                .bookAuthor("Pleaides")
+                .bookDescription("Veni Vidi Vici")
+                .bookCopy(1)
+                .bookPages(632)
+                .bookPublisher("Roman")
+                .build()
+        );
+
         objectMapper.registerModule(new JavaTimeModule());
         BorrowDTO borrow = BorrowDTO.builder()
-                .bookId(8)
+                .bookId(book.getBookId())
                 .readerId(5)
                 .build();
 
@@ -222,7 +236,8 @@ public class BorrowControllerTest {
                     Assertions.assertNotNull(responseBody.getData());
                     Assertions.assertNull(responseBody.getErrors());
 
-                    returnService.saveReturn(responseBody.getData());
+                    borrowService.deleteBorrowByCode(responseBody.getData().getBorrowCode());
+                    bookService.deleteBook(book.getBookId());
                 })
         ;
     }
