@@ -1,6 +1,5 @@
 package id.co.indivara.library.controllers;
 
-import id.co.indivara.library.entities.Wishlist;
 import id.co.indivara.library.entities.ResponseBody;
 import id.co.indivara.library.entities.WishlistDTO;
 import id.co.indivara.library.services.WishlistService;

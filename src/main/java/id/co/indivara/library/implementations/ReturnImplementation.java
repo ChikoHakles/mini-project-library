@@ -5,9 +5,7 @@ import id.co.indivara.library.entities.Borrow;
 import id.co.indivara.library.entities.Return;
 import id.co.indivara.library.exceptions.BookTransactionException;
 import id.co.indivara.library.exceptions.DataRelatedException;
-import id.co.indivara.library.repositories.BorrowRepository;
 import id.co.indivara.library.repositories.ReturnRepository;
-import id.co.indivara.library.services.BorrowService;
 import id.co.indivara.library.services.ReturnService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,9 +19,6 @@ import java.util.UUID;
 public class ReturnImplementation implements ReturnService {
     @Autowired
     private ReturnRepository returnRepository;
-
-    @Autowired
-    private BorrowService borrowService;
 
     @Override
     public ArrayList<Return> findAllReturn() {

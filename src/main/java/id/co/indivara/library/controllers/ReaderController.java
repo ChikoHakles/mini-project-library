@@ -1,9 +1,7 @@
 package id.co.indivara.library.controllers;
 
-import id.co.indivara.library.entities.Book;
 import id.co.indivara.library.entities.Reader;
 import id.co.indivara.library.entities.ResponseBody;
-import id.co.indivara.library.entities.Wishlist;
 import id.co.indivara.library.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")

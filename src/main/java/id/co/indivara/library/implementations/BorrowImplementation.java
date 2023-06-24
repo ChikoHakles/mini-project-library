@@ -1,12 +1,10 @@
 package id.co.indivara.library.implementations;
 
 import id.co.indivara.library.entities.*;
-import id.co.indivara.library.exceptions.BookTransactionException;
 import id.co.indivara.library.exceptions.DataRelatedException;
 import id.co.indivara.library.repositories.BorrowRepository;
 import id.co.indivara.library.repositories.ReturnRepository;
 import id.co.indivara.library.services.*;
-import id.co.indivara.library.utils.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +12,6 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class BorrowImplementation implements BorrowService {

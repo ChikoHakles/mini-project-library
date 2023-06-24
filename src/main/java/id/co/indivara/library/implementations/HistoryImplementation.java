@@ -18,8 +18,6 @@ public class HistoryImplementation implements HistoryService {
     @Autowired
     private ReturnService returnService;
 
-    @Autowired
-    private BorrowService borrowService;
     @Override
     public ArrayList<History> findAllHistory() {
         ArrayList<History> histories = new ArrayList<>();

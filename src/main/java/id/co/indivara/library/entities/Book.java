@@ -2,7 +2,6 @@ package id.co.indivara.library.entities;
 
 import lombok.*;
 
-
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -65,11 +64,6 @@ public class Book {
 
     @Column(name = "book_number_of_reading")
     private Integer bookNumberOfReading;
-
-//    @ManyToOne
-//    @JoinColumn(name = "category_id")
-//    @NotBlank(message = "Book Category must been filled")
-//    private String categoryId;
 
     public Book(@NonNull String bookTitle, @NonNull String bookAuthor, @NonNull String bookPublisher, @NonNull String bookDescription, @NonNull Integer bookPages, @NonNull Integer bookCopy) {
         this.bookTitle = bookTitle;
