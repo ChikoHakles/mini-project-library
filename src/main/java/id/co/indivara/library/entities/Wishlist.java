@@ -17,7 +17,7 @@ public class Wishlist {
     @Id
     @Column(name = "wishlist_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer wishListId;
+    private Integer wishlistId;
 
     @ManyToOne
     private Book book;
