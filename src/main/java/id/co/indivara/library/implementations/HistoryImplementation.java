@@ -20,8 +20,11 @@ public class HistoryImplementation implements HistoryService {
 
     @Override
     public ArrayList<History> findAllHistory() {
+        //buat array list kosong yang akan menampung history
         ArrayList<History> histories = new ArrayList<>();
+        //untuk semua transaksi (borrow yang ada return nya)
         for (Return r : returnService.findAllReturn()) {
+            //buat object history berdasarkan buku, pembaca, borrow, dan return nya
             histories.add(
                     History.builder()
                             .bookId(r.getBorrow().getBook().getBookId())
@@ -35,17 +38,23 @@ public class HistoryImplementation implements HistoryService {
                             .build()
             );
         }
+        //jika history tidak ada, akan return DataRelatedException
         if (histories.isEmpty()) {
             throw new DataRelatedException("No History Found");
         }
+        //output array list berisi history
         return histories;
     }
 
     @Override
     public ArrayList<History> findHistoryByBook(Book book) {
+        //buat array list kosong yang akan menampung history
         ArrayList<History> histories = new ArrayList<>();
+        //untuk semua transaksi (borrow yang ada return nya)
         for (Return r : returnService.findAllReturn()) {
+            //jika buku yang terkait sama dengan buku yang di input
             if(r.getBorrow().getBook() == book) {
+                //buat object history berdasarkan buku, pembaca, borrow, dan return nya
                 histories.add(
                         History.builder()
                                 .bookId(r.getBorrow().getBook().getBookId())
@@ -60,17 +69,23 @@ public class HistoryImplementation implements HistoryService {
                 );
             }
         }
+        //jika history tidak ada, akan return DataRelatedException
         if (histories.isEmpty()) {
             throw new DataRelatedException("No History Found");
         }
+        //output array list berisi history berdasarkan buku
         return histories;
     }
 
     @Override
     public ArrayList<History> findHistoryByReader(Reader reader) {
+        //buat array list kosong yang akan menampung history
         ArrayList<History> histories = new ArrayList<>();
+        //untuk semua transaksi (borrow yang ada return nya)
         for (Return r : returnService.findAllReturn()) {
+            //jika pembaca yang terkait sama dengan pembaca yang di input
             if(r.getBorrow().getReader() == reader) {
+                //buat object history berdasarkan buku, pembaca, borrow, dan return nya
                 histories.add(
                         History.builder()
                                 .bookId(r.getBorrow().getBook().getBookId())
@@ -85,17 +100,23 @@ public class HistoryImplementation implements HistoryService {
                 );
             }
         }
+        //jika history tidak ada, akan return DataRelatedException
         if (histories.isEmpty()) {
             throw new DataRelatedException("No History Found");
         }
+        //output array list berisi history berdasarkan buku
         return histories;
     }
 
     @Override
     public ArrayList<History> findHistoryByBookAndReader(Book book, Reader reader) {
+        //buat array list kosong yang akan menampung history
         ArrayList<History> histories = new ArrayList<>();
+        //untuk semua transaksi (borrow yang ada return nya)
         for (Return r : returnService.findAllReturn()) {
+            //jika pembaca dan buku yang terkait sama dengan pembaca dan buku yang di input
             if((r.getBorrow().getBook() == book) && (r.getBorrow().getReader() == reader)) {
+                //buat object history berdasarkan buku, pembaca, borrow, dan return nya
                 histories.add(
                         History.builder()
                                 .bookId(r.getBorrow().getBook().getBookId())
@@ -110,9 +131,11 @@ public class HistoryImplementation implements HistoryService {
                 );
             }
         }
+        //jika history tidak ada, akan return DataRelatedException
         if (histories.isEmpty()) {
             throw new DataRelatedException("No History Found");
         }
+        //output array list berisi history berdasarkan buku
         return histories;
     }
 }
