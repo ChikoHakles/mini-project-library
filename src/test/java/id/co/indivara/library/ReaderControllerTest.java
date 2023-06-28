@@ -24,11 +24,16 @@ public class ReaderControllerTest {
     @Autowired
     private ReaderService readerService;
 
+    //siapkan credential untuk 3 jenis akun, reader, librarian, dan admin
     String readerKey = "cmVhZGVyOnJlYWRlcg==";
     String librarianKey = "bGlicmFyaWFuOmxpYnJhcmlhbg==";
     String adminKey = "YWRtaW46YWRtaW4=";
 
+    //object mapper untuk membaca format json dan mengubah nya jadi string jika diperlukan
     ObjectMapper objectMapper = new ObjectMapper();
+
+    /* yang dilakukan disini adalah menyiapkan request dengan type json dan credential Authorization dengan key yg telah ada.
+     * setelah itu, mengecek response apakah status sesuai, data sesuai, dan error sesuai untuk setiap case.*/
 
     @Test
     public void findAllReaderSuccessTest() throws Exception {

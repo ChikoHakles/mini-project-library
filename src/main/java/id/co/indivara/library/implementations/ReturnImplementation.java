@@ -22,15 +22,19 @@ public class ReturnImplementation implements ReturnService {
 
     @Override
     public ArrayList<Return> findAllReturn() {
+        //membuat array list yang berisi semua return
         ArrayList<Return> returns = new ArrayList<>((Collection<Return>) returnRepository.findAll());
+        //jika array list tersebut kosong, throw DataRelatedException
          if (returns.isEmpty()) {
              throw new DataRelatedException("No Return Found");
          }
+        //output array list tersebut
          return returns;
     }
 
     @Override
     public Return findReturnById(UUID id) {
+        //cari return berdasar id return, jika tidak ada akan throw DataRelatedException
         return returnRepository.findById(id).orElseThrow(
                 () -> new DataRelatedException("No Return Found")
         );
@@ -38,27 +42,36 @@ public class ReturnImplementation implements ReturnService {
 
     @Override
     public Return findReturnByCode(String code) {
+        //cari return berdasar code return
        Return ret = returnRepository.findByReturnCode(code);
+       //jika tidak ada akan throw DataRelatedException
        if(ret == null) {
            throw new DataRelatedException("No Return Found");
        }
+       //output data return tersebut
        return ret;
     }
 
     @Override
     public Return findReturnByBorrow(Borrow borrow) {
+        //mencari return berdasarkan object Borrow nya (dibuat di ReturnRepository)
         return returnRepository.findByBorrow(borrow);
     }
 
     @Transactional
     @Override
     public Return saveReturn(Borrow borrow) {
+        //jika return dengan borrow yang dimaksud sudah ada, tandanya buku sudah dikembalikan dan tidak bisa return lagi
         if(findReturnByBorrow(borrow) != null) {
             throw new BookTransactionException("This Borrow has returned!");
         }
+        //simpan data buku ke sebuah variabel
         Book book = borrow.getBook();
+        //value bookready + 1 (karena buku telah dikembalikan)
         book.setBookReady(book.getBookReady() + 1);
+        //value bookUnreturned - 1 (karena buku telah dikembalikan)
         book.setBookUnreturned(book.getBookUnreturned() - 1);
+        //output berupa save return ke repository (dan database)
         return returnRepository.save(new Return(borrow));
     }
 
